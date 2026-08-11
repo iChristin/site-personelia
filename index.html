@@ -609,7 +609,7 @@
   <div class="wrap">
     <div class="contact-box">
       <h2>Prêt à voir ce que ça donnerait chez vous ?</h2>
-      <p>30 minutes suffisent pour identifier les tâches administratives qui vous prennent le plus de temps, et voir si l'automatisation est pertinente pour vous.</p>
+      <p>15 minutes suffisent pour identifier les tâches administratives qui vous prennent le plus de temps, et voir si l'automatisation est pertinente pour vous.</p>
 
       <form class="contact-form" id="audit-form">
         <p class="hp"><label>Ne pas remplir : <input id="f-hp" name="hp" autocomplete="off" tabindex="-1" /></label></p>
@@ -792,12 +792,14 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Envoi en cours…';
 
-      const { error } = await supabaseClient.from('leads').insert({
+      const leadData = {
         nom: document.getElementById('f-name').value,
         email: document.getElementById('f-email').value,
         entreprise: document.getElementById('f-entreprise').value,
         message: document.getElementById('f-message').value
-      });
+      };
+
+      const { error } = await supabaseClient.from('leads').insert(leadData);
 
       if(error){
         formStatus.className = 'form-status error';
@@ -805,6 +807,17 @@
         submitBtn.disabled = false;
         submitBtn.textContent = 'Demander mon audit gratuit';
       } else {
+        // Envoi des emails (alerte + confirmation) via la Edge Function — on n'attend pas
+        // le résultat pour afficher le succès : l'enregistrement en base a déjà réussi.
+        fetch('https://olwbpspemeynsrtwelrz.supabase.co/functions/v1/notify-lead', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sd2Jwc3BlbWV5bnNydHdlbHJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyMjI3MTUsImV4cCI6MjEwMTc5ODcxNX0.DtfzqNlKqG4vwyPU0L12j8HplLyxDFfv-3kfPVuonig'
+          },
+          body: JSON.stringify(leadData)
+        }).catch(() => { /* silencieux : le lead est déjà bien enregistré en base */ });
+
         auditForm.reset();
         auditForm.querySelectorAll('.row, button').forEach(el => el.style.display = 'none');
         formStatus.className = 'form-status success';
