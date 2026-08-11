@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Personelia — Votre assistant administratif automatisé</title>
@@ -272,28 +273,43 @@
   .step h3{ font-family:'Space Grotesk', sans-serif; font-size: 15.5px; font-weight:600; margin-bottom:6px; }
   .step p{ font-size: 13px; color: var(--slate); line-height:1.5; }
 
+  /* ---------- FIT / POUR QUI ---------- */
+  .fit-grid{ display:grid; grid-template-columns: 1fr; margin-top: 8px; }
+  .fit-col{
+    background: var(--paper-card); border: 1px solid var(--line); border-radius: 14px; padding: 26px 24px;
+  }
+  .fit-col.yes{ border-color: var(--brand-green); background: var(--mint-tint); }
+  .fit-col h3{ font-family:'Space Grotesk', sans-serif; font-size: 15.5px; font-weight:700; margin-bottom: 14px; display:flex; align-items:center; gap:8px; }
+  .fit-col ul{ list-style:none; }
+  .fit-col li{
+    font-size: 13.5px; color: var(--ink-soft); padding: 8px 0; line-height:1.5;
+    display:flex; align-items:flex-start; gap:9px; border-bottom: 1px dashed var(--line);
+  }
+  .fit-col li:last-child{ border-bottom:none; }
+  .fit-col.yes li::before{ content:"✓"; color: var(--brand-green); font-weight:700; flex-shrink:0; }
+
   /* ---------- PRICING ---------- */
-  .pricing-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .pricing-grid{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
   .price-card{
     background: var(--paper-card); border: 1px solid var(--line); border-radius: 16px;
-    padding: 30px 26px; position: relative;
+    padding: 26px 22px; position: relative;
   }
   .price-card.featured{ border-color: var(--brand-green); background: var(--mint-tint); box-shadow: 0 12px 30px rgba(15,110,86,0.14); }
   .badge-top{
-    position:absolute; top:-11px; left: 26px;
+    position:absolute; top:-11px; left: 22px;
     background: var(--brand-green); color:white; font-family:'IBM Plex Mono', monospace;
     font-size: 10.5px; font-weight:600; padding: 4px 10px; border-radius: 20px; letter-spacing:0.03em;
   }
-  .price-name{ font-family:'Space Grotesk', sans-serif; font-size: 19px; font-weight:700; margin-bottom: 6px; }
-  .price-desc{ font-size: 13.5px; color: var(--slate); margin-bottom: 20px; line-height:1.5; }
-  .price-amounts{ display:flex; align-items:baseline; gap:10px; margin-bottom: 22px; flex-wrap:wrap; }
-  .price-setup{ font-family:'Space Grotesk', sans-serif; font-size: 30px; font-weight:700; color:var(--ink); }
-  .price-setup-label{ font-size: 12px; color: var(--slate); }
-  .price-monthly{ font-family:'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft); background:var(--paper); border:1px solid var(--line); padding:4px 10px; border-radius: 20px; }
-  .price-features{ list-style:none; margin-bottom: 26px; }
+  .price-name{ font-family:'Space Grotesk', sans-serif; font-size: 17.5px; font-weight:700; margin-bottom: 6px; }
+  .price-desc{ font-size: 13px; color: var(--slate); margin-bottom: 18px; line-height:1.5; min-height:40px; }
+  .price-amounts{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-bottom: 20px; }
+  .price-setup{ font-family:'Space Grotesk', sans-serif; font-size: 23px; font-weight:700; color:var(--ink); line-height:1.15; }
+  .price-setup-label{ font-size: 11.5px; color: var(--slate); }
+  .price-monthly{ font-family:'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft); background:var(--paper); border:1px solid var(--line); padding:3px 9px; border-radius: 20px; margin-top:4px; display:inline-block; }
+  .price-features{ list-style:none; margin-bottom: 24px; }
   .price-features li{
-    font-size: 13.5px; color: var(--ink-soft); padding: 8px 0; border-bottom: 1px dashed var(--line);
-    display:flex; align-items:flex-start; gap:9px;
+    font-size: 13px; color: var(--ink-soft); padding: 7px 0; border-bottom: 1px dashed var(--line);
+    display:flex; align-items:flex-start; gap:8px;
   }
   .price-features li:last-child{ border-bottom:none; }
   .price-features li::before{ content:"✓"; color: var(--mint); font-weight:700; flex-shrink:0; }
@@ -308,8 +324,24 @@
   }
   .contact-box h2{ color:white; }
   .contact-box p{ color: rgba(255,255,255,0.7); max-width: 44ch; margin: 0 auto 26px auto; font-size:15px; line-height:1.55; }
-  .contact-box .btn-primary{ background: white; color: var(--ink) !important; }
+  .contact-box .btn-primary{ background: var(--stamp); color:white !important; }
   .contact-box .btn-primary:hover{ opacity:0.9; }
+
+  .contact-form{ max-width: 440px; margin: 0 auto; text-align:left; }
+  .contact-form .row{ margin-bottom: 14px; }
+  .contact-form label{ display:block; font-size:12.5px; color: rgba(255,255,255,0.75); margin-bottom:6px; font-weight:600; }
+  .contact-form input, .contact-form textarea{
+    width:100%; font-family:'Inter', sans-serif; font-size: 14px; color: var(--ink);
+    background: white; border: 1px solid transparent; border-radius: 8px;
+    padding: 11px 13px; resize: vertical;
+  }
+  .contact-form input:focus, .contact-form textarea:focus{ outline: 2px solid var(--stamp); }
+  .contact-form textarea{ min-height: 90px; }
+  .contact-form button{ width:100%; border:none; cursor:pointer; }
+  .contact-form .hp{ position:absolute; left:-9999px; }
+  .form-status{ font-size: 13.5px; margin-top: 14px; }
+  .form-status.success{ color: #8FE3C0; }
+  .form-status.error{ color: #F3A6A6; }
 
   footer{ padding: 34px 0 50px 0; text-align:center; }
   footer p{ font-size: 12.5px; color: var(--slate); }
@@ -488,6 +520,26 @@
   </div>
 </section>
 
+<!-- ============ POUR QUI ============ -->
+<section>
+  <div class="wrap">
+    <h2>Pour qui c'est</h2>
+    <p class="section-sub">Un aperçu honnête, pour savoir tout de suite si on est faits pour travailler ensemble.</p>
+
+    <div class="fit-grid">
+      <div class="fit-col yes" style="max-width:560px;">
+        <h3>✓ Pour vous si…</h3>
+        <ul>
+          <li>Vous dirigez une TPE de 2 à 15 salariés</li>
+          <li>Devis, relances ou classement de documents vous prennent un temps fou chaque semaine</li>
+          <li>Vous voulez rester propriétaire de vos automatisations, sans dépendre d'un prestataire pour tout changement</li>
+          <li>Vous préférez parler directement à la personne qui construit votre solution</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PRICING ============ -->
 <section id="tarifs">
   <div class="wrap">
@@ -499,7 +551,7 @@
         <div class="price-name">Un automatisme</div>
         <div class="price-desc">Pour démarrer sur une seule tâche : classement, relances OU devis.</div>
         <div class="price-amounts">
-          <span class="price-setup">350 €</span>
+          <span class="price-setup">450 €</span>
           <span class="price-setup-label">mise en place</span>
           <span class="price-monthly">+ 60 €/mois</span>
         </div>
@@ -517,7 +569,7 @@
         <div class="price-name">Assistant Administratif complet</div>
         <div class="price-desc">Les trois automatisations connectées entre elles, pour une gestion administrative bout en bout.</div>
         <div class="price-amounts">
-          <span class="price-setup">750 €</span>
+          <span class="price-setup">850 €</span>
           <span class="price-setup-label">mise en place</span>
           <span class="price-monthly">+ 130 €/mois</span>
         </div>
@@ -529,9 +581,26 @@
         </ul>
         <a href="#contact" class="btn btn-primary">Demander un audit gratuit</a>
       </div>
+
+      <div class="price-card">
+        <div class="price-name">Sur-mesure</div>
+        <div class="price-desc">Pour les besoins qui dépassent le classement, les devis et les relances.</div>
+        <div class="price-amounts">
+          <span class="price-setup">À partir de 1 200 €</span>
+          <span class="price-setup-label">mise en place</span>
+          <span class="price-monthly">+ 190 €/mois</span>
+        </div>
+        <ul class="price-features">
+          <li>Automatisations illimitées</li>
+          <li>Site internet ou landing page inclus</li>
+          <li>Support prioritaire</li>
+          <li>Accompagnement dédié</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Demander un audit gratuit</a>
+      </div>
     </div>
 
-    <p class="pricing-note">Besoin d'une automatisation qui n'est pas dans la liste ? <a href="#contact" style="color:var(--ink);">Parlons-en</a>, chaque activité a ses spécificités.</p>
+    <p class="pricing-note">Besoin d'un cadrage encore plus précis avant de vous engager ? <a href="#contact" style="color:var(--ink);">Parlons-en</a>, chaque activité a ses spécificités.</p>
   </div>
 </section>
 
@@ -541,7 +610,30 @@
     <div class="contact-box">
       <h2>Prêt à voir ce que ça donnerait chez vous ?</h2>
       <p>15 minutes suffisent pour identifier les tâches administratives qui vous prennent le plus de temps, et voir si l'automatisation est pertinente pour vous.</p>
-      <a href="mailto:contact@personelia.com?subject=Demande%20d%27audit%20gratuit%20-%20Assistant%20Administratif" class="btn btn-primary">contact@personelia.com</a>
+
+      <form class="contact-form" id="audit-form">
+        <p class="hp"><label>Ne pas remplir : <input id="f-hp" name="hp" autocomplete="off" tabindex="-1" /></label></p>
+
+        <div class="row">
+          <label for="f-name">Nom</label>
+          <input type="text" id="f-name" required autocomplete="name" />
+        </div>
+        <div class="row">
+          <label for="f-email">Email</label>
+          <input type="email" id="f-email" required autocomplete="email" />
+        </div>
+        <div class="row">
+          <label for="f-entreprise">Entreprise</label>
+          <input type="text" id="f-entreprise" autocomplete="organization" />
+        </div>
+        <div class="row">
+          <label for="f-message">Votre besoin (facultatif)</label>
+          <textarea id="f-message" placeholder="Devis, relances, classement de documents, autre chose ?"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Demander mon audit gratuit</button>
+        <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </div>
 </section>
@@ -678,6 +770,48 @@
     });
   }, { threshold: 0.3 });
   observer.observe(demoSection);
+
+  // Soumission du formulaire de contact (Supabase, sans rechargement de page)
+  const supabaseClient = window.supabase.createClient(
+    'https://olwbpspemeynsrtwelrz.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sd2Jwc3BlbWV5bnNydHdlbHJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyMjI3MTUsImV4cCI6MjEwMTc5ODcxNX0.DtfzqNlKqG4vwyPU0L12j8HplLyxDFfv-3kfPVuonig'
+  );
+
+  const auditForm = document.getElementById('audit-form');
+  const formStatus = document.getElementById('form-status');
+  if(auditForm){
+    auditForm.addEventListener('submit', async function(e){
+      e.preventDefault();
+
+      // Honeypot : si ce champ caché est rempli, c'est un bot -> on ignore silencieusement
+      if(document.getElementById('f-hp').value){
+        return;
+      }
+
+      const submitBtn = auditForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi en cours…';
+
+      const { error } = await supabaseClient.from('leads').insert({
+        nom: document.getElementById('f-name').value,
+        email: document.getElementById('f-email').value,
+        entreprise: document.getElementById('f-entreprise').value,
+        message: document.getElementById('f-message').value
+      });
+
+      if(error){
+        formStatus.className = 'form-status error';
+        formStatus.textContent = "Une erreur est survenue. Vous pouvez aussi écrire directement à contact@personelia.com.";
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Demander mon audit gratuit';
+      } else {
+        auditForm.reset();
+        auditForm.querySelectorAll('.row, button').forEach(el => el.style.display = 'none');
+        formStatus.className = 'form-status success';
+        formStatus.textContent = "Merci ! Votre demande a bien été envoyée, je reviens vers vous rapidement.";
+      }
+    });
+  }
 </script>
 
 </body>
