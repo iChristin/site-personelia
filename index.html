@@ -385,6 +385,7 @@
   .form-status{ font-size: 13.5px; margin-top: 14px; }
   .form-status.success{ color: #8FE3C0; }
   .form-status.error{ color: #F3A6A6; }
+  .cal-embed-box{ width:100%; height:600px; border-radius:12px; overflow:hidden; background:white; }
 
   footer{ padding: 34px 0 50px 0; text-align:center; }
   footer p{ font-size: 12.5px; color: var(--slate); }
@@ -392,6 +393,7 @@
   @media (prefers-reduced-motion: reduce){ *{ animation: none !important; transition: none !important; } }
 
   @media (max-width: 760px){
+    .cal-embed-box{ height: 480px; }
     .stage{ padding: 28px 16px; }
     .node{ width: 76px; }
     .arrow{ display:none; }
@@ -400,6 +402,8 @@
     .diff-grid{ grid-template-columns: 1fr; }
     .pricing-grid{ grid-template-columns: 1fr; }
     .nav-links a:not(.nav-cta){ display:none; }
+    .nav-cta{ font-size:12.5px; padding:8px 12px; white-space:nowrap; }
+    .logo-word{ font-size:16px; }
   }
 </style>
 </head>
@@ -780,7 +784,10 @@
 
       <div id="cal-embed-wrap" style="display:none;">
         <p style="color:white; font-weight:600; margin:26px 0 14px;">Choisissez maintenant un créneau qui vous convient :</p>
-        <div id="cal-inline-embed" style="width:100%; height:600px; border-radius:12px; overflow:hidden; background:white;"></div>
+        <div id="cal-inline-embed" class="cal-embed-box"></div>
+        <p style="margin-top:14px;">
+          <a id="cal-fallback-link" href="#" target="_blank" rel="noopener" style="color:#8FE3C0; font-size:13.5px; text-decoration:underline;">Le calendrier ne s'affiche pas ? Ouvrez-le dans un nouvel onglet ↗</a>
+        </p>
       </div>
     </div>
   </div>
@@ -801,6 +808,7 @@
 
   let calEmbedded = false;
   function renderCalEmbed(){
+    document.getElementById('cal-fallback-link').href = "https://cal.com/" + CAL_LINK;
     if(calEmbedded) return;
     calEmbedded = true;
     Cal.ns.audit("inline", {
